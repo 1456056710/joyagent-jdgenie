@@ -12,6 +12,8 @@ import com.jd.genie.agent.tool.mcp.McpTool;
 import com.jd.genie.agent.util.DateUtil;
 import com.jd.genie.agent.util.ThreadUtil;
 import com.jd.genie.config.GenieConfig;
+import com.jd.genie.config.MemoryConfig;
+import com.jd.genie.memory.MemoryManager;
 import com.jd.genie.model.req.AgentRequest;
 import com.jd.genie.model.req.GptQueryReq;
 import com.jd.genie.service.AgentHandlerService;
@@ -48,6 +50,8 @@ public class GenieController {
     private AgentHandlerFactory agentHandlerFactory;
     @Autowired
     private IGptProcessService gptProcessService;
+    @Autowired
+    private MemoryManager memoryManager;
 
     /**
      * 开启SSE心跳
@@ -133,8 +137,10 @@ public class GenieController {
                         .sopPrompt(request.getSopPrompt())
                         .basePrompt(request.getBasePrompt())
                         .agentType(request.getAgentType())
-                        .isStream(Objects.nonNull(request.getIsStream()) ? request.getIsStream() : false)
+                        .isStream(false)
+//                        .isStream(Objects.nonNull(request.getIsStream()) ? request.getIsStream() : false)
                         .templateType("dataAgent".equals(request.getOutputStyle()) ? "fix" : "empty")
+                        .memoryManager(memoryManager)
                         .build();
                 // 构建工具列表
                 agentContext.setToolCollection(buildToolCollection(agentContext, request));

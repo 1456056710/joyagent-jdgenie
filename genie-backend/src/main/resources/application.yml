@@ -37,20 +37,20 @@ logging:
     root: INFO
 llm:
   default:
-    base_url: '<input llm server here>'
-    apikey: '<input llm key here>'
+    base_url: 'https://api.gitcode.com/api/v5'
+    apikey: 'nUzg2XFv2Qk8DYMj85hbyfRe'
     interface_url: '/chat/completions'
-    model: gpt-4.1
+    model: Qwen/Qwen3-Coder-480B-A35B-Instruct
     max_tokens: 16384
-  settings: '{"claude-3-7-sonnet-v1": {
-        "model": "claude-3-7-sonnet-v1",
-        "max_tokens": 8192,
-        "temperature": 0,
-        "base_url": "<input llm server here>",
-        "apikey": "<input llm key here>",
-        "interface_url": "/chat/completions",
-        "max_input_tokens": 128000
-    }}'
+#  settings: '{"claude-3-7-sonnet-v1": {
+#        "model": "claude-3-7-sonnet-v1",
+#        "max_tokens": 8192,
+#        "temperature": 0,
+#        "base_url": "<input llm server here>",
+#        "apikey": "<input llm key here>",
+#        "interface_url": "/chat/completions",
+#        "max_input_tokens": 128000
+#    }}'
 
 autobots:
   autoagent:
@@ -126,7 +126,7 @@ autobots:
     code_interpreter_url: "http://127.0.0.1:1601"
     deep_search_url: "http://127.0.0.1:1601"
     mcp_client_url: "http://127.0.0.1:8188"
-    mcp_server_url: "https://mcp.api-inference.modelscope.net/1784ac5c6d0044/sse"
+    mcp_server_url: "https://mcp.api-inference.modelscope.net/1784ac5c6d0044/sse,https://mcp.api-inference.modelscope.net/5ede43adab674e/sse,http://localhost:8000/mcp"
     knowledge_url: "http://127.0.0.1:1601"
     data_analysis_url: "http://127.0.0.1:1601"
     summary:
@@ -303,11 +303,15 @@ Assistant：现在需要在上一步列举出的11、22、33、44、55、66、77
       host: 127.0.0.1:40000
       user: user
       password: pwd
-    qdrantConfig:
+    qdrant-config:
       enable: false
-      embeddingUrl: http://xxxx.local
-      host: 127.0.0.1
-      port: 443
+      embedding-Url: https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings
+      model: text-embedding-v4
+      embedding-api-key: sk-b189eb1542394cd99af3fe03dc8b2815
+      host: d73085a4-1a36-412e-82cf-c69ba1a73a95.us-west-1-0.aws.cloud.qdrant.io
+#      api-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.b8IZVsBuHHH4z2ovnNSgBIjeE9tp4mNMgfW3ewBgJwM
+      collection: genie
+      port: 6333
       apiKey: key
     db-config:
       type: h2

@@ -663,7 +663,8 @@ public class LLM {
                                 new InputStreamReader(responseBody.byteStream())
                         );
                         while ((line = reader.readLine()) != null) {
-                            if (line.startsWith("data: ")) {
+//                            if (line.startsWith("data: ")) {
+                            if (line.startsWith("data:")) {
                                 String data = line.substring(6);
                                 if (data.equals("[DONE]")) {
                                     break;

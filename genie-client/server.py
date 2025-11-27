@@ -1,7 +1,9 @@
 from datetime import datetime
 from fastapi import FastAPI, Request, Body
+from litellm.proxy.client.http_client import HTTPClient
 
 from app.client import SseClient
+from app.http_client import HttpMcpClient
 from app.header import HeaderEntity
 from app.logger import default_logger as logger
 
@@ -17,6 +19,9 @@ app = FastAPI(
         "name": "MIT",
     },
 )
+
+def _is_streamable_http(url: str) -> bool:
+    return url.rstrip("/").endswith("/mcp")
 
 
 @app.get("/health")
@@ -66,9 +71,14 @@ async def list_tools(
     - 根据请求 server_url 查询 tools 列表
     """
     logger.info(f"方法:/v1/tool/list, {server_url}, request headers: {request.headers}")
-    mcp_client = SseClient(server_url=server_url, entity=HeaderEntity(request.headers))
+    # mcp_client = SseClient(server_url=server_url, entity=HeaderEntity(request.headers))
     try:
-        tools = await mcp_client.list_tools()
+        if _is_streamable_http(server_url):
+            client = HttpMcpClient(server_url=server_url)
+            tools = await client.list_tools()
+        else:
+            mcp_client = SseClient(server_url=server_url, entity=HeaderEntity(request.headers))
+            tools = await mcp_client.list_tools()
         return {
             "code": 200,
             "message": "success",
@@ -95,12 +105,20 @@ async def call_tool(
     """
     logger.info(f"方法: /v1/tool/call, {name} with arguments: {arguments}")
     logger.info(f"call: {server_url}, request headers: {request.headers}")
-    entity = HeaderEntity(request.headers)
-    if arguments is not None and arguments.get("Cookie") is not None:
-        entity.append_cookie(arguments.get("Cookie"))
-    mcp_client = SseClient(server_url=server_url, entity=entity)
+    # entity = HeaderEntity(request.headers)
+    # if arguments is not None and arguments.get("Cookie") is not None:
+    #     entity.append_cookie(arguments.get("Cookie"))
+    # mcp_client = SseClient(server_url=server_url, entity=entity)
     try:
-        result = await mcp_client.call_tool(name, arguments)
+        if _is_streamable_http(server_url):
+            client = HttpMcpClient(server_url=server_url)
+            result = await client.call_tool(name, arguments)
+        else:
+            entity = HeaderEntity(request.headers)
+            if arguments is not None and arguments.get("Cookie") is not None:
+                entity.append_cookie(arguments.get("Cookie"))
+            mcp_client = SseClient(server_url=server_url, entity=entity)
+            result = await mcp_client.call_tool(name, arguments)
         return {
             "code": 200,
             "message": "success",

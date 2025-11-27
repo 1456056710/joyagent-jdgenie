@@ -14,10 +14,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
@@ -110,6 +107,26 @@ public abstract class BaseAgent {
                 throw new IllegalArgumentException("Unsupported role type: " + role);
         }
         memory.addMessage(message);
+        if(context.getMemoryManager() != null){
+            context.getMemoryManager().setUserId(context.getSessionId());
+            Map<String, Object> metadata = new HashMap<>();
+            metadata.put("role", role.getValue());
+            metadata.put("hasImage", base64Image != null);
+            if(role == RoleType.TOOL && args.length > 0){
+                metadata.put("toolCallId", args[0]);
+            }
+            metadata.put("agentType", context.getAgentType());
+            metadata.put("requestId", context.getRequestId());
+            try{
+                context.getMemoryManager().addMemory(
+                        content,
+                        0,
+                        metadata
+                );
+            } catch (Exception e) {
+                log.warn("{} add working memory failed", context.getRequestId(), e);
+            }
+        }
     }
 
     public String executeTool(ToolCall command) {

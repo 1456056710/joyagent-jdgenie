@@ -3,6 +3,7 @@ package com.jd.genie.agent.agent;
 import com.jd.genie.agent.dto.File;
 import com.jd.genie.agent.printer.Printer;
 import com.jd.genie.agent.tool.ToolCollection;
+import com.jd.genie.memory.MemoryManager;
 import com.jd.genie.model.dto.FileInformation;
 import com.jd.genie.model.req.AgentRequest;
 import lombok.AllArgsConstructor;
@@ -34,4 +35,7 @@ public class AgentContext {
     Integer agentType;
     List<File> taskProductFiles;
     String templateType;
+
+    //添加
+    MemoryManager memoryManager;
 }

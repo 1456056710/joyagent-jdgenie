@@ -26,6 +26,7 @@ import static io.qdrant.client.ValueFactory.value;
 import static io.qdrant.client.VectorsFactory.vectors;
 import static io.qdrant.client.WithPayloadSelectorFactory.enable;
 import static io.qdrant.client.WithPayloadSelectorFactory.include;
+import static io.qdrant.client.QueryFactory.nearest;
 
 /**
  * qdrant版本为v1.10.0
