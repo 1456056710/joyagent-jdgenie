@@ -49,3 +49,19 @@ CREATE TABLE sales_data (
     discount DECIMAL(10, 4) DEFAULT NULL COMMENT '折扣',
     profit DECIMAL(10, 4) DEFAULT NULL COMMENT '利润'
 ) COMMENT='销售数据表';
+
+-- 用户表
+CREATE TABLE `sys_user` (
+                            `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+                            `username` varchar(50) NOT NULL COMMENT '用户名',
+                            `password` varchar(100) NOT NULL COMMENT '密码(加密)',
+                            `nickname` varchar(50) DEFAULT NULL COMMENT '昵称',
+                            `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
+                            `avatar` varchar(255) DEFAULT NULL COMMENT '头像URL',
+                            `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '状态 1:正常 0:禁用',
+                            `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                            `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                            `yn` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否有效',
+                            PRIMARY KEY (`id`),
+                            UNIQUE KEY `uk_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';

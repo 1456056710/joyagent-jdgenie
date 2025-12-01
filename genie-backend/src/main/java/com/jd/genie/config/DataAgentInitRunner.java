@@ -28,17 +28,17 @@ public class DataAgentInitRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("dataAgent config:{}", dataAgentConfig);
-        QdrantConfig qdrantConfig = dataAgentConfig.getQdrantConfig();
-        if (qdrantConfig.getEnable()) {
-            qdrantService.createCosineCollection(DataAgentConstants.SCHEMA_COLLECTION_NAME, 1024);
-            log.info("qdrant collection init success");
-        }
-        EsConfig esConfig = dataAgentConfig.getEsConfig();
-        if (esConfig.getEnable()) {
-            columnValueSyncService.initColumnValueIndex();
-            log.info("column value es index init success");
-        }
-        chatModelInfoService.initModelInfo(dataAgentConfig);
+//        log.info("dataAgent config:{}", dataAgentConfig);
+//        QdrantConfig qdrantConfig = dataAgentConfig.getQdrantConfig();
+//        if (qdrantConfig.getEnable()) {
+//            qdrantService.createCosineCollection(DataAgentConstants.SCHEMA_COLLECTION_NAME, 1024);
+//            log.info("qdrant collection init success");
+//        }
+//        EsConfig esConfig = dataAgentConfig.getEsConfig();
+//        if (esConfig.getEnable()) {
+//            columnValueSyncService.initColumnValueIndex();
+//            log.info("column value es index init success");
+//        }
+//        chatModelInfoService.initModelInfo(dataAgentConfig);
     }
 }

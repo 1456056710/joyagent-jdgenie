@@ -31,7 +31,7 @@ mybatis-plus:
       logic-delete-value: 0
       logic-not-delete-value: 1
 server:
-  port: 8080
+  port: 8088
 logging:
   level:
     root: INFO
@@ -51,6 +51,16 @@ llm:
 #        "interface_url": "/chat/completions",
 #        "max_input_tokens": 128000
 #    }}'
+
+memory:
+  config:
+    max-capacity: 100
+    importance-ratio: 0.1
+    decay-factor: 0.95
+    working-memory-capacity: 20
+    working-memory-tokens: 5000
+    working-memory-ttl-minutes: 120
+
 
 autobots:
   autoagent:
@@ -126,7 +136,8 @@ autobots:
     code_interpreter_url: "http://127.0.0.1:1601"
     deep_search_url: "http://127.0.0.1:1601"
     mcp_client_url: "http://127.0.0.1:8188"
-    mcp_server_url: "https://mcp.api-inference.modelscope.net/1784ac5c6d0044/sse,https://mcp.api-inference.modelscope.net/5ede43adab674e/sse,http://localhost:8000/mcp"
+#    mcp_server_url: "http://localhost:8000/mcp"
+    mcp_server_url: ""
     knowledge_url: "http://127.0.0.1:1601"
     data_analysis_url: "http://127.0.0.1:1601"
     summary:
@@ -304,15 +315,16 @@ Assistant：现在需要在上一步列举出的11、22、33、44、55、66、77
       user: user
       password: pwd
     qdrant-config:
-      enable: false
+      enable: true
       embedding-Url: https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings
       model: text-embedding-v4
       embedding-api-key: sk-b189eb1542394cd99af3fe03dc8b2815
-      host: d73085a4-1a36-412e-82cf-c69ba1a73a95.us-west-1-0.aws.cloud.qdrant.io
+      host: 10.92.119.9
+#      host: d73085a4-1a36-412e-82cf-c69ba1a73a95.us-west-1-0.aws.cloud.qdrant.io
 #      api-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.b8IZVsBuHHH4z2ovnNSgBIjeE9tp4mNMgfW3ewBgJwM
       collection: genie
-      port: 6333
-      apiKey: key
+      port: 6334
+#      apiKey: key
     db-config:
       type: h2
       host:

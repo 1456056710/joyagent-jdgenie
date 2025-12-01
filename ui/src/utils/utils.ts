@@ -135,8 +135,36 @@ export function formatSecondsToMinutes(seconds: number): string {
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-export const getSessionId = () => {
-  return `session-${getUniqId()}`;
+const SESSION_STORAGE_KEY = 'genie_session_id';
+
+/**
+ * 获取或创建 sessionId
+ * - 同一对话窗口复用同一 sessionId
+ * - 用户点击"新建对话"时调用 resetSessionId() 重置
+ */
+export const getSessionId = (): string => {
+  let sessionId = sessionStorage.getItem(SESSION_STORAGE_KEY);
+  if (!sessionId) {
+    sessionId = `session-${getUniqId()}`;
+    sessionStorage.setItem(SESSION_STORAGE_KEY, sessionId);
+  }
+  return sessionId;
+};
+
+/**
+ * 重置 sessionId（用于新建对话）
+ */
+export const resetSessionId = (): string => {
+  const newSessionId = `session-${getUniqId()}`;
+  sessionStorage.setItem(SESSION_STORAGE_KEY, newSessionId);
+  return newSessionId;
+};
+
+/**
+ * 清除 sessionId
+ */
+export const clearSessionId = (): void => {
+  sessionStorage.removeItem(SESSION_STORAGE_KEY);
 };
 
 /**

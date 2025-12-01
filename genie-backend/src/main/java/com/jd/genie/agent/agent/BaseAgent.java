@@ -10,9 +10,13 @@ import com.jd.genie.agent.llm.LLM;
 import com.jd.genie.agent.printer.Printer;
 import com.jd.genie.agent.tool.ToolCollection;
 import com.jd.genie.agent.util.ThreadUtil;
+import com.jd.genie.entity.MemoryItem;
+import com.jd.genie.memory.MemoryType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,6 +73,11 @@ public abstract class BaseAgent {
                 currentStep++;
                 log.info("{} {} Executing step {}/{}", context.getRequestId(), getName(), currentStep, maxSteps);
                 String stepResult = step();
+
+                if(StringUtils.isNotBlank(stepResult)){
+                    updateMemory(RoleType.ASSISTANT, stepResult, null);
+                }
+
                 results.add(stepResult);
             }
 

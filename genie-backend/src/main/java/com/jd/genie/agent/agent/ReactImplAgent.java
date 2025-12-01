@@ -12,10 +12,13 @@ import com.jd.genie.agent.tool.BaseTool;
 import com.jd.genie.agent.util.FileUtil;
 import com.jd.genie.agent.util.SpringContextHolder;
 import com.jd.genie.config.GenieConfig;
+import com.jd.genie.entity.MemoryItem;
+import com.jd.genie.memory.MemoryType;
 import com.jd.genie.model.response.AgentResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
 
 import java.util.*;
@@ -169,7 +172,30 @@ public class ReactImplAgent extends ReActAgent {
 
     @Override
     public String run(String request) {
+        if(context.getMemoryManager() != null){
+            List<MemoryItem> retrievedMemory = context.getMemoryManager()
+                    .retrieveMemory(request, 5, Map.of("type", MemoryType.WORKING, "userId", context.getSessionId()));
+            if(!retrievedMemory.isEmpty()){
+                String memoryContext = formatMemoriesAsContext(retrievedMemory);
+                String enhancePrompt = getSystemPromptSnapshot() + "\n\n" + memoryContext;
+                setSystemPromptSnapshot(enhancePrompt);
+            }
+        }
         return super.run(request);
+    }
+
+    private String formatMemoriesAsContext(List<MemoryItem> retrievedMemory) {
+        if(retrievedMemory.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("【之前的对话记忆】");
+        for(MemoryItem memoryItem : retrievedMemory){
+            DateTime timeStamp = memoryItem.getTimeStamp();
+            sb.append("\n【时间】")
+                    .append(timeStamp.toString("yyyy-MM-dd HH:mm:ss"))
+                    .append("\n【内容】")
+                    .append(memoryItem.getContent());
+        }
+        return String.join("\n", sb.toString());
     }
 
 }
