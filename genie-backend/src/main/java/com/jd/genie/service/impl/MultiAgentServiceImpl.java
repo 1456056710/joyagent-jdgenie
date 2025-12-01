@@ -166,6 +166,8 @@ public class MultiAgentServiceImpl implements IMultiAgentService {
         request.setBasePrompt(request.getAgentType() == 5 ? genieConfig.getGenieBasePrompt() : "");
         request.setIsStream(true);
         request.setOutputStyle(req.getOutputStyle());
+        // 设置 userId，优先使用前端传入的 userId，否则使用 sessionId
+        request.setUserId(req.getUserId() != null ? req.getUserId() : req.getSessionId());
 
         return request;
     }

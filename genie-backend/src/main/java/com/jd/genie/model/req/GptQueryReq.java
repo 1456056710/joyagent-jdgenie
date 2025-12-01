@@ -20,4 +20,8 @@ public class GptQueryReq {
     private String outputStyle;
     private String traceId;
     private String user;
+    /**
+     * 用户ID，登录用户使用真实ID，未登录使用sessionId
+     */
+    private String userId;
 }

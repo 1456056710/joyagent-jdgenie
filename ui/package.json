@@ -30,7 +30,8 @@
     "react-router-dom": "^7.6.2",
     "react-syntax-highlighter": "^15.6.1",
     "remark-gfm": "^4.0.1",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

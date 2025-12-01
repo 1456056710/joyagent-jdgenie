@@ -16,6 +16,7 @@ import { useMemoizedFn } from "ahooks";
 import classNames from "classnames";
 import Logo from "../Logo";
 import { Modal } from "antd";
+import { useUserStore } from "@/store/userStore";
 
 type Props = {
   inputInfo: CHAT.TInputInfo;
@@ -37,6 +38,7 @@ const ChatView: GenieType.FC<Props> = (props) => {
   const actionViewRef = ActionView.useActionView();
   const sessionId = useMemo(() => getSessionId(), []);
   const [modal, contextHolder] = Modal.useModal();
+  const user = useUserStore((state) => state.user);
 
   const combineCurrentChat = (
     inputInfo: CHAT.TInputInfo,
@@ -75,6 +77,7 @@ const ChatView: GenieType.FC<Props> = (props) => {
       query: message,
       deepThink: deepThink ? 1 : 0,
       outputStyle,
+      userId: user?.userId ? String(user.userId) : sessionId,
     };
     const handleMessage = (data: MESSAGE.Answer) => {
       const { finished, resultMap, packageType, status } = data;

@@ -28,6 +28,7 @@ public class AgentRequest {
     private Boolean isStream;
     private List<Message> messages;
     private String outputStyle; // 交付物产出格式：html(网页模式）， docs(文档模式）， table(表格模式）
+    private String userId; // 用户ID，用于记忆隔离
 
     @Data
     @Builder

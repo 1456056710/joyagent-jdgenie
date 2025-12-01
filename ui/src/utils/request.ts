@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { showMessage } from './utils';
+import { useUserStore } from '@/store/userStore';
 
 // 创建axios实例
 const request: AxiosInstance = axios.create({
@@ -11,6 +12,11 @@ const request: AxiosInstance = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   (config) => {
+    // 从 store 获取 token
+    const token = useUserStore.getState().user?.token;
+    if (token) {
+      config.headers.Authorization = token;
+    }
     return config;
   },
   (error) => {

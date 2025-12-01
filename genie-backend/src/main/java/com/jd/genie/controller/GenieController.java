@@ -125,9 +125,11 @@ public class GenieController {
         ThreadUtil.execute(() -> {
             try {
                 Printer printer = new SSEPrinter(emitter, request, request.getAgentType());
+                // 使用 userId 作为记忆隔离标识，如果没有则使用 sessionId
+                String memoryUserId = request.getUserId() != null ? request.getUserId() : request.getSessionId();
                 AgentContext agentContext = AgentContext.builder()
                         .requestId(request.getRequestId())
-                        .sessionId(request.getSessionId())
+                        .sessionId(memoryUserId)
                         .printer(printer)
                         .query(request.getQuery())
                         .task("")

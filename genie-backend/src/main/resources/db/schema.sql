@@ -1,4 +1,4 @@
-CREATE TABLE `chat_model_info` (
+CREATE TABLE IF NOT EXISTS `chat_model_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `code` varchar(50) NOT NULL COMMENT '模型编码',
   `type` varchar(10) NOT NULL COMMENT '模型类型TABLE,SQL',
@@ -11,7 +11,7 @@ CREATE TABLE `chat_model_info` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='数据模型表信息';
 
 
-CREATE TABLE `chat_model_schema` (
+CREATE TABLE IF NOT EXISTS `chat_model_schema` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `model_code` varchar(200)  NOT NULL COMMENT '模型编码',
   `column_id` varchar(1000)  NOT NULL COMMENT '字段唯一ID',
@@ -27,7 +27,7 @@ CREATE TABLE `chat_model_schema` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='数据模型表信息';
 
-CREATE TABLE sales_data (
+CREATE TABLE IF NOT EXISTS sales_data (
     row_id INT PRIMARY KEY COMMENT '行 ID',
     order_id VARCHAR(50) DEFAULT NULL COMMENT '订单 ID',
     order_date DATE  COMMENT '订单日期',
@@ -51,7 +51,7 @@ CREATE TABLE sales_data (
 ) COMMENT='销售数据表';
 
 -- 用户表
-CREATE TABLE `sys_user` (
+CREATE TABLE IF NOT EXISTS `sys_user` (
                             `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
                             `username` varchar(50) NOT NULL COMMENT '用户名',
                             `password` varchar(100) NOT NULL COMMENT '密码(加密)',
